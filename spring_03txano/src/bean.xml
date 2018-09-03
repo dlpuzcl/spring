@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.springframework.org/schema/beans"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:aop="http://www.springframework.org/schema/aop"
+        xmlns:tx="http://www.springframework.org/schema/tx"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.2.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-4.2.xsd ">
+
+
+    <!--配置C3P0的连接池-->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+    <!--注入里边的属性值-->
+        <property name="driverClass" value="com.mysql.jdbc.Driver"></property>
+        <property name="JdbcUrl" value="jdbc:mysql:///spring_03"></property>
+        <property name="user" value="root"></property>
+        <property name="password" value="123456"></property>
+
+    </bean>
+
+    <!--1.配置事务管理器-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+
+    <!--2.开启事务的注解-->
+    <tx:annotation-driven transaction-manager="transactionManager"></tx:annotation-driven>
+
+
+
+    <bean id="orderService" class="edu.dlpu.service.OrderService">
+        <property name="orderDao" ref="orderDao"></property>
+    </bean>
+    <bean id="orderDao" class="edu.dlpu.dao.OrderDao">
+        <property name="jdbcTemplate" ref="jdbcTemplate"></property>
+    </bean>
+
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+
+
+
+
+</beans>

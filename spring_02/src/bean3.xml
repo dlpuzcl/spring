@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop" xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd"> <!-- bean definitions here -->
+
+
+    <!--1.配置两个类的对象-->
+    <bean id="book" class="edu.dlpu.aop.Book"></bean>
+    <bean id="myBook" class="edu.dlpu.aop.MyBook"></bean>
+    <!--2.配置aop操作-->
+            <aop:config>
+                <!--2.1配置切入点-->
+                <aop:pointcut id="poincut1" expression="execution(* edu.dlpu.aop.Book.*(..))"></aop:pointcut>
+
+                <!--2.2配置切面
+                    把增强用的方法上面-->
+                <aop:aspect ref="myBook">
+                    <!--配置增强类型
+                        method:增强类里面使用那个方法作为前置
+                        pointcut-ref:切入点
+                    -->
+                    <aop:before method="before1" pointcut-ref="poincut1"/>
+
+                    <!--后置增强-->
+                    <aop:after method="after1" pointcut-ref="poincut1"/>
+
+                    <!--环绕增强-->
+                    <aop:around method="around1" pointcut-ref="poincut1"/>
+                </aop:aspect>
+            </aop:config>
+
+</beans>
